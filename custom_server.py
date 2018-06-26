@@ -46,7 +46,7 @@ def run_local_server(port = 8000):
     httpd.serve_forever()
 
 def kill_local_server(pid):
-    test = os.kill(pid, signal.SIGTERM) # kills subprocess, allowing clean up
+    test = os.kill(pid, signal.SIGTERM) # kills subprocess, allowing clean up/clearing cache
 
 if __name__ == "__main__":
     main()
