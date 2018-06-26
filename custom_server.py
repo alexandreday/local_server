@@ -10,12 +10,15 @@ def random_string(n=50):
 
 def main():
     n_arg = len(sys.argv)
-    if n_arg == 1:
-        html_page = "index.html"
-    elif n_arg == 2:
-        html_page = str(sys.argv[1])
-    else:
-        run_local_server() # forever loop
+    task = sys.argv[1]
+    
+    if task == "1":
+        run_cp_kill()
+    elif task == "2":
+        run_local_server(port = 8499)
+
+def run_cp_kill():
+    html_page = "index.html"
 
     # Run local server
     random_tag = random_string()
@@ -23,10 +26,10 @@ def main():
     os.system('cp %s %s'%(html_page,tmp_file))
 
     # Runs other process in the background
-    p = subprocess.Popen('python custom_server.py run server please'.split(" "))
+    p = subprocess.Popen('python custom_server.py 2'.split(" "))
 
     time.sleep(0.5) # wait for server to launch
-    url = "http://localhost:8000/%s"%tmp_file
+    url = "http://localhost:8499/%s"%tmp_file
     os.system('open %s'%url)
     time.sleep(0.5)
     os.system('rm %s'%tmp_file)
