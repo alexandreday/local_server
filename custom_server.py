@@ -22,14 +22,14 @@ def open_file(filename):
     else:                                   # linux variants
         subprocess.call(('xdg-open', filename))
 
-def run_cp_kill(html_page):
-    # Run local server
+def run_cp_kill(html_page, port):
     tmp_file = html_page.strip('.html') + '_' + random_string() + '.html'
     shutil.copyfile(html_page, tmp_file)
-    # Run python server on a different thread
-    threading.Thread(target=run_local_server, daemon=True).start()
-    time.sleep(0.5) # wait for server to launch
-    url = 'http://localhost:8499/%s' % tmp_file
+    # create the server in a seperate thread
+    threading.Thread(target=run_local_server, args=(port,), daemon=True).start()
+    # wait for server to launch
+    time.sleep(0.5)
+    url = 'http://localhost:%d/%s' % (port, tmp_file)
     open_file(url)
     time.sleep(0.5)
     os.remove(tmp_file)
@@ -47,4 +47,4 @@ if __name__ == '__main__':
     if len(sys.argv) == 2:
         html_page = str(sys.argv[1])
     print(html_page)
-    run_cp_kill(html_page)
+    run_cp_kill(html_page, 8499)
